@@ -22,5 +22,4 @@ ENV PATH="/project/.venv/bin:$PATH"
 WORKDIR /project
 COPY app.py app.py
 
-VOLUME [ "/project/data" ]
 CMD ["python", "app.py"]

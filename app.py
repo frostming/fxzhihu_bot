@@ -6,6 +6,7 @@ import re
 import sys
 from urllib.parse import quote
 
+import httpx
 from telebot import TeleBot
 from telebot.types import (
     InlineQuery,
@@ -14,7 +15,7 @@ from telebot.types import (
 )
 
 logger = logging.getLogger(__name__)
-is_debug = "-id" in sys.argv
+is_debug = "-d" in sys.argv
 
 bot = TeleBot(token=os.environ["BOT_TOKEN"])
 
@@ -22,6 +23,13 @@ LINK_PREVIEW_FORMAT = "https://t.me/iv?url={}&rhash=6bebaec97e3897"
 URL_REGEX = re.compile(
     r"https://(www|zhuanlan)\.?zhihu\.com/(p/\d+|question/\d+(?:/answer/\d+)?)"
 )
+
+
+def fetch_title(url: str) -> str:
+    response = httpx.get(url)
+    response.raise_for_status()
+    title = re.findall(r"<title>(.+?)</title>", response.text)[0]
+    return title
 
 
 @bot.inline_handler(func=lambda query: True)
@@ -34,13 +42,15 @@ def fix_zhihu_link(inline_query: InlineQuery):
     preview_url = LINK_PREVIEW_FORMAT.format(quote(fixed_url, safe=":/"))
     logger.debug(f"Preview URL: {preview_url}")
     try:
+        title = fetch_title(fixed_url)
         bot.answer_inline_query(
             inline_query.id,
             cache_time=0 if is_debug else None,
             results=[
                 InlineQueryResultArticle(
                     id="1",
-                    title="Link preview",
+                    title=title,
+                    thumbnail_url="https://cdn.jsdelivr.net/gh/frostming/fxzhihu_bot/zhihu.webp",
                     input_message_content=InputTextMessageContent(
                         message_text=preview_url
                     ),
