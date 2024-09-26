@@ -32,12 +32,10 @@ def fetch_title(url: str) -> str:
     return title
 
 
-@bot.inline_handler(func=lambda query: True)
+@bot.inline_handler(func=lambda query: URL_REGEX.search(query.query) is not None)
 def fix_zhihu_link(inline_query: InlineQuery):
     logger.debug(f"Received inline query: {inline_query.query}")
     text = inline_query.query
-    if not URL_REGEX.search(text):
-        return
     fixed_url = text.replace(".zhihu.com", ".fxzhihu.com")
     preview_url = LINK_PREVIEW_FORMAT.format(quote(fixed_url, safe=":/"))
     logger.debug(f"Preview URL: {preview_url}")
