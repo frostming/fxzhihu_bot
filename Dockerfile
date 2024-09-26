@@ -1,4 +1,4 @@
-ARG PYTHON_BASE=3.11-slim
+ARG PYTHON_BASE=3.12-slim
 # build stage
 FROM python:$PYTHON_BASE AS builder
 
@@ -20,7 +20,7 @@ FROM python:$PYTHON_BASE
 COPY --from=builder /project/.venv/ /project/.venv
 ENV PATH="/project/.venv/bin:$PATH"
 WORKDIR /project
-COPY picguessr.py picguessr.py
+COPY app.py app.py
 
 VOLUME [ "/project/data" ]
-CMD ["python", "picguessr.py"]
+CMD ["python", "app.py"]

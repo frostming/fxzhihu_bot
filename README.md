@@ -1,18 +1,18 @@
-# picguessr
+# FxZhihu Bot
+
+Telegram Bot for [FxZhihu](https://github.com/frostming/fxzhihu)
 
 ## Host yourself
 
 Clone the repository:
 
 ```
-git clone https://github.com/frostming/picguessr.git
+git clone https://github.com/frostming/fxzhihu-bot.git
 ```
 
 Create a file named `.env` in the root directory of the repository, and put the following content in it:
 
 ```
-AZURE_OPENAI_ENDPOINT=""  # Your Azure OpenAI endpoint
-AZURE_OPENAI_API_KEY=""    # Your Azure OpenAI API key
 BOT_TOKEN=""  # The bot token got from BotFather
 ```
 
