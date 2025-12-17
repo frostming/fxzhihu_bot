@@ -1,20 +1,24 @@
 name: Deploy
 
 on:
-  workflow_dispatch:
   push:
-    tags:
-      - '*'
-
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+      - 'wrangler.jsonc'
+      - '.github/workflows/deploy.yaml'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    name: Deploy
     steps:
-      - name: Rollout the deployment
-        uses: appleboy/ssh-action@v1.0.3
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v4
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          script: ${{ secrets.DEPLOY_SCRIPT }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
