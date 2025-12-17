@@ -1,9 +1,5 @@
 import { Bot, webhookCallback, InlineQueryResultBuilder } from "grammy";
 
-export interface Env {
-	BOT_TOKEN: string;
-}
-
 const LINK_PREVIEW_FORMAT =
 	"https://t.me/iv?url={url}&rhash=6bebaec97e3897";
 const URL_REGEX =

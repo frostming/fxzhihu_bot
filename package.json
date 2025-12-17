@@ -7,6 +7,7 @@
 		"dev": "wrangler dev",
 		"start": "wrangler dev",
 		"test": "vitest",
+		"set-webhook": "node ./scripts/set-webhook.js",
 		"cf-typegen": "wrangler types"
 	},
 	"devDependencies": {
